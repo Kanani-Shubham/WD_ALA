@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buttons with Blurred Background</title>
+    <style>
+        /* Blurred background styling */
+        .background-blur {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('bg.jpg'); /* Set your image name here */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            filter: blur(3px); /* Blur effect for background */
+            z-index: -1; /* Keeps it behind all other content */
+        }
+
+        /* Centering container styling */
+        body, html {
+            margin: 0;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Button container for layout */
+        .button-container {
+            display: flex;
+            gap: 20px;
+        }
+
+        /* Styling for task buttons */
+        .task-button {
+            display: inline-block;
+            position: relative;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            border: 2px solid gold; /* Gold border color */
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            cursor: pointer;
+            overflow: hidden;
+            transition: transform 0.4s ease, color 0.3s ease;
+            text-decoration: none; /* Remove underline */
+        }
+
+        /* Shine effect animation */
+        .task-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: skewX(-45deg);
+            transition: left 0.5s ease;
+        }
+
+        .task-button:hover::before {
+            left: 100%;
+        }
+
+        /* Hover effect for the button */
+        .task-button:hover {
+            color: #ffdf5d;
+            transform: translateY(-5px);
+        }
+
+        /* Subtle lift for the button text */
+        .task-button span {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .task-button:hover span {
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Blurred background image -->
+    <div class="background-blur"></div>
+
+    <!-- Button container -->
+    <div class="button-container">
+        <a href="Task_1.html" class="task-button"><span>Task-1</span></a>
+        <a href="Task_2.html" class="task-button"><span>Task-2</span></a>
+        <a href="Task_3.html" class="task-button"><span>Task-3</span></a>
+    </div>
+</body>
+</html>

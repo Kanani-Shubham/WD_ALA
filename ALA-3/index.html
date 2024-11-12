@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Bike Store</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+	     /* Hide iframe on mobile devices */
+        #sliderFrame {
+            display: none;
+            width: 100%;
+            height: 100vh;
+            border: none;
+			margin: 0px;
+			padding:0px;
+        }
+        
+        /* Show iframe on tablets and computers */
+        @media (min-width: 600px) {
+            #sliderFrame {
+                display: block;
+            }
+        }
+        /* General Style */
+        body {
+            background-color: #ffffff; /* White background */
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+
+        /* Header Styling */
+        header {
+            background-color: #004c3f; /* Dark green header */
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        header .navbar-brand {
+            font-size: 28px;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        header .navbar-nav .nav-link {
+            color: #ffffff;
+        }
+
+        /* 3D Model Section */
+        .model-section {
+            padding: 40px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .model-placeholder {
+            width: 300px;
+            height: 300px;
+            background: url('3d-model-placeholder.png') center center no-repeat;
+            background-size: contain;
+        }
+
+        /* Product Cards */
+        .product-container {
+            display: flex;
+            justify-content: space-between;
+            overflow-x: auto;
+            padding: 40px 20px;
+        }
+
+        .product-card {
+            width: 300px;
+            height: 400px;
+            margin: 20px;
+            perspective: 1000px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .product-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .product-card:hover .product-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .product-card-front, .product-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+
+        .product-card-front {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .product-card-front img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .product-card-front h3 {
+            margin: 15px 0;
+            font-size: 18px;
+            color: #004c3f;
+        }
+
+        .product-card-front p {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .product-card-back {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transform: rotateY(180deg);
+            padding: 20px;
+        }
+
+        .product-card-back h3 {
+            margin-bottom: 15px;
+            font-size: 18px;
+            color: #004c3f;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            margin-top: 20px;
+        }
+
+        .button-group button {
+            background-color: #ff8000; /* New button color */
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .button-group button:hover {
+            background-color: #ffa040;
+        }
+
+        /* Responsive Styling */
+        @media (max-width: 768px) {
+            .product-container {
+                flex-direction: row;
+                overflow-x: scroll;
+            }
+
+            .product-card {
+                min-width: 300px;
+                margin: 0 10px;
+            }
+        }
+       @media (min-width: 769px) {
+            .product-container {
+                flex-direction: row;
+                 display: flex;
+    overflow-x: hidden; /* Hide the      scrollbar */
+    width: 100%;
+    padding: 20px;
+    position: relative;
+    scroll-behavior: smooth; /* Smooth scrolling effect */
+            }
+
+            .product-card {
+                min-width: 300px;
+                margin: 0 10px;
+              animation: autoScroll 30s linear;
+               display: flex;
+               flex-wrap: nowrap;
+            }
+        }
+      .product-container .product-card {
+    flex: 0 0 auto; /* Prevents the product cards from resizing */
+}
+
+        /* Additional Sections */
+        .extra-section {
+            display: flex;
+            padding:0px;
+            align-items: center;
+        }
+
+        .extra-section img {
+            width: 50%;
+            height: 10%;
+            border-radius: 8px;
+        }
+
+        .extra-section .text-content {
+            padding-left: 30px;
+            color: #555;
+            max-width: 50%;
+        }
+
+        .extra-section h3 {
+            color: #004c3f;
+            margin-bottom: 20px;
+        }
+		/* Animation for automatic scrolling */
+    @keyframes autoScroll {
+       0% {
+           transform: translateX(0);
+       }
+       100% {
+           transform: translateX(-100%); /* Scrolls the cards fully */
+       }
+	}
+/* Apply the scrolling animation to the container */
+.product-card{
+    animation: autoScroll 4s linear infinite;
+}
+
+/* Repeat the content to ensure smooth scrolling */
+.product-container {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+
+.product-container .product-card {
+    flex: 0 0 auto; /* Prevents the product cards from resizing */
+}
+
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <nav class="navbar navbar-expand-lg">
+            <a class="navbar-brand" href="#">E-Bike Store</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Cart (0)</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+  	
+  </header>
+     
+	        <div id="content">
+        <iframe id="sliderFrame" src="slider\slider.html"></iframe>
+    </div>
+
+    <script>
+        // JavaScript check for screen width and load content conditionally
+        function loadSliderOnLargeScreens() {
+            const sliderFrame = document.getElementById("sliderFrame");
+            if (window.innerWidth >= 768) {
+                // Load slider.html if the screen width is greater than or equal to 768px
+                sliderFrame.style.display = "block";
+            } else {
+                // Hide the iframe content on smaller devices
+                sliderFrame.style.display = "none";
+            }
+        }
+
+        // Initial check and add resize event listener
+        loadSliderOnLargeScreens();
+        window.addEventListener("resize", loadSliderOnLargeScreens);
+    </script>
+    <!-- Product Cards Section -->
+    <section class="product-container">
+        <!-- Repeat this structure for all 8 product cards -->
+        <div class="product-card">
+            <div class="product-card-inner">
+                <div class="product-card-front">
+                    <img src="Defender.jpeg" alt="Defender">
+                    <h3>Defender</h3>
+                    <p>$1,200.00</p>
+                </div>
+                <div class="product-card-back">
+                    <h3>Defender</h3>
+                    <p>High performance, durable, and efficient for urban commutes.</p>
+                    <div class="button-group">
+                        <button>Add to Cart</button>
+                        <button>Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-card-inner">
+                <div class="product-card-front">
+                    <img src="P3.jpeg" alt="Prakriti">
+                    <h3>Prakriti</h3>
+                    <p>$1,200.00</p>
+                </div>
+                <div class="product-card-back">
+                    <h3>Prakriti</h3>
+                    <p>High performance, durable, and efficient for urban commutes.</p>
+                    <div class="button-group">
+                        <button>Add to Cart</button>
+                        <button>Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-card-inner">
+                <div class="product-card-front">
+                    <img src="NIJ.jpeg" alt="NIJ ALPHA X PRO">
+                    <h3>NIJ ALPHA X PRO</h3>
+                    <p>$1,200.00</p>
+                </div>
+                <div class="product-card-back">
+                    <h3>NIJ ALPHA X PRO</h3>
+                    <p>High performance, durable, and efficient for urban commutes.</p>
+                    <div class="button-group">
+                        <button>Add to Cart</button>
+                        <button>Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-card-inner">
+                <div class="product-card-front">
+                    <img src="NIJ-2.jpeg" alt="NIJ">
+                    <h3>NIJ</h3>
+                    <p>$1,200.00</p>
+                </div>
+                <div class="product-card-back">
+                    <h3>NIJ</h3>
+                    <p>High performance, durable, and efficient for urban commutes.</p>
+                    <div class="button-group">
+                        <button>Add to Cart</button>
+                        <button>Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="product-card">
+            <div class="product-card-inner">
+                <div class="product-card-front">
+                    <img src="CAPTIVA.jpeg" alt="CAPTIVA">
+                    <h3>Captiva</h3>
+                    <p>$1,200.00</p>
+                </div>
+                <div class="product-card-back">
+                    <h3>Captiva</h3>
+                    <p>High performance, durable, and efficient for urban commutes.</p>
+                    <div class="button-group">
+                        <button>Add to Cart</button>
+                        <button>Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- More product cards here... -->
+    </section>
+
+    <!-- Additional Sections -->
+    <section class="extra-section">
+        <img src="left.jpeg" alt="Bike Information">
+        <div class="text-content">
+            <h3>Explore Our E-Bikes</h3>
+            <p>Experience the best in electric bike technology. Our bikes offer unparalleled performance, sustainability, and comfort for every journey.</p>
+        </div>
+    </section>
+    <section class="extra-section">
+        <div class="text-content">
+            <h3>Quality You Can Trust</h3>
+            <p>Built to last and designed for daily use, our e-bikes provide a reliable, eco-friendly alternative for modern transportation needs.</p>
+        </div>
+        <img src="right.png" alt="Bike Quality">
+    </section>
+    <script>
+    // Auto-scroll for product cards
+	let scrollContainer = document.querySelector('.product-container');
+	let scrollAmount = 0;
+
+	// Auto-scroll function for horizontal scrolling
+	function autoScrollCards() {
+		scrollAmount += 2; // Adjust scroll speed here
+		if (scrollAmount >= scrollContainer.scrollWidth - scrollContainer.clientWidth) {
+			scrollAmount = 0; // Reset scroll position when reaching the end
+		}
+		scrollContainer.scrollTo({
+			left: scrollAmount,
+			behavior: 'smooth'
+		});
+	}
+
+	// Set an interval to auto-scroll every 50 milliseconds
+	setInterval(autoScrollCards, 50);
+
+	// Cart functionality
+	let cart = [];
+	let cartCounter = document.querySelector('.nav-link[href="#cart"]');
+
+	// Function to add a product to the cart
+	function addToCart(productName, productPrice) {
+		// Check if the product is already in the cart
+		let existingProduct = cart.find(product => product.name === productName);
+
+		if (existingProduct) {
+			existingProduct.quantity += 1;
+		} else {
+			// Add new product to the cart
+			cart.push({ name: productName, price: productPrice, quantity: 1 });
+		}
+		updateCartCounter();
+	}
+
+	// Update cart counter in the navigation
+	function updateCartCounter() {
+		let totalItems = cart.reduce((total, product) => total + product.quantity, 0);
+		cartCounter.textContent = Cart (${totalItems});
+	}
+
+	// Function to handle the "Buy Now" action
+	function buyNow(productName, productPrice) {
+		alert(You bought ${productName} for $${productPrice});
+		// Here you can add the purchase processing logic, such as redirecting to a payment page
+	}
+
+	// Event listeners for "Add to Cart" and "Buy Now" buttons
+	document.querySelectorAll('.product-card').forEach(card => {
+		const productName = card.querySelector('h3').textContent;
+		const productPrice = card.querySelector('.product-card-front p').textContent.replace('$', '');
+
+		card.querySelector('button:nth-child(1)').addEventListener('click', () => {
+			addToCart(productName, productPrice);
+			alert(${productName} has been added to your cart!);
+		});
+
+        card.querySelector('button:nth-child(2)').addEventListener('click', () => {
+            buyNow(productName, productPrice);
+        });
+	});
+
+    </script>
+</body>
+
+</html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Choose Us</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .card {
+            background-color: #1f1f1f;
+            border: none;
+            border-radius: 15px;
+            color: #ffffff;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        h2 {
+            color: #00ffcc;
+            text-shadow: 0 0 2px #00ffcc, 0 0 2px #00ffcc;
+        }
+
+        .card-title {
+            color: #00ffcc;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2 class="text-center my-4">Why Choose Us?</h2>
+    <div class="row text-center">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <i class="fas fa-shield-alt fa-3x mb-3"></i>
+                    <h5 class="card-title">Quality Assurance</h5>
+                    <p>All our e-bikes come with a quality guarantee.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <i class="fas fa-clock fa-3x mb-3"></i>
+                    <h5 class="card-title">Fast Delivery</h5>
+                    <p>Get your e-bike delivered to your doorstep quickly.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <i class="fas fa-headset fa-3x mb-3"></i>
+                    <h5 class="card-title">24/7 Support</h5>
+                    <p>Our customer support is available around the clock.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
